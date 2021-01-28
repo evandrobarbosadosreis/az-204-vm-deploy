@@ -2,15 +2,17 @@
 
 Exercício realizado como preparação para o exame AZ-204 demonstrando o processo de configuração e deploy de uma VM por meio do SDK da plataforma Azure.
 
-Através deste exemplo, é possível compreender melhor a relação e quais são os recursos necessários para realizar um deploy de VM em ambiente de núvem.
+Através deste exemplo, é possível compreender melhor a relação e quais são os recursos necessários para realizar um deploy de uma VM em ambiente de núvem.
 
 Os recursos criados neste exemplo são:
 
-- Resource Group;
+- Resource Group
 - Virtual Network
 - Virtual Network Subnet
 - Virtual Network Interface Card
 - Virtual Machine
+- Public IP Address 
+- Network Security Group
 
 Além destes recursos, será criado automaticamente um Virtual Disk. 
 
@@ -34,11 +36,4 @@ Para definir o Sistema Operacional da VM são informados 3 parâmetros:
 
 ## Configurando o aplicativo
 
-Para que o aplicativo se conecte corretamente em sua conta algumas informações são necessárias no arquivo `azureauth.properties`, sendo:
-
-- subscription-id: Pode ser recuperado no menu de "Subscriptions"
-- tenant-id: Obtido no menu "Azure Active Directory" > "Properties"
-- cliend-id: O client-id é gerado após registrar seu aplicativo na opção "Azure Active Directory" -> "App registrations"
-- client-secret: Após liberar o aplicativo e obter o client-id, gere uma chave de acesso no menu "Certificates & secrets"
-
-Após isso, crie uma "Role Assignment" como "Contribuitor" para o seu aplicativo no menu "Access Control" da sua Subscription.
+Para saber como configurar o acesso do seu aplicativo aos serviços da azure, clique [https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-create-service-principal-portal](aqui).

@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.Azure.Management.Compute.Fluent.Models;
 using Microsoft.Azure.Management.Fluent;
+using Microsoft.Azure.Management.Network.Fluent.Models;
 using Microsoft.Azure.Management.ResourceManager.Fluent;
 using Microsoft.Azure.Management.ResourceManager.Fluent.Core;
 
@@ -54,6 +55,38 @@ namespace az_204_vm_deploy
                 .WithSubnet(subnetName, subnetAdress)
                 .Create();
 
+            //cria um ip público para acesso remoto
+            var publicIPName = "az-204-public-ip";
+
+            Console.WriteLine($"Public IP Adress: { publicIPName }");
+            var publicIP = azure.PublicIPAddresses.Define(publicIPName)
+                .WithRegion(region)
+                .WithExistingResourceGroup(resourceGroup)
+                .Create();
+
+            //cria um network security group para gerenciar as regras de segurança de entrada e saída
+            var securityGroupName = "az-204-network-security-group";
+
+            Console.WriteLine($"Network Security Group: {securityGroupName}");
+            var securityGroup = azure.NetworkSecurityGroups.Define(securityGroupName)
+                .WithRegion(region)
+                .WithExistingResourceGroup(resourceGroup)
+                .Create();
+
+            //cria uma security rule permitindo conexão TCP na porta 3389 (RDP)
+            Console.WriteLine("Liberando a porta 3389 para conexão por RDP");
+            securityGroup.Update()
+                .DefineRule("Permite-RDP")
+                    .AllowInbound()
+                    .FromAnyAddress()
+                    .FromAnyPort()
+                    .ToAnyAddress()
+                    .ToPort(3389)
+                    .WithProtocol(SecurityRuleProtocol.Tcp)
+                    .WithDescription("Permite-RDP")
+                    .Attach()
+                .Apply();
+
             //cria um network interface card para conectar a vm na network
             var networkInterfaceName = "az-204-network-interface-card";
             
@@ -64,6 +97,8 @@ namespace az_204_vm_deploy
                 .WithExistingPrimaryNetwork(network)
                 .WithSubnet(subnetName)
                 .WithPrimaryPrivateIPAddressDynamic()
+                .WithExistingPrimaryPublicIPAddress(publicIP)
+                .WithExistingNetworkSecurityGroup(securityGroup)
                 .Create();
 
             //cria a máquina virtual
