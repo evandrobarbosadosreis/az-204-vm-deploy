@@ -36,4 +36,4 @@ Para definir o Sistema Operacional da VM são informados 3 parâmetros:
 
 ## Configurando o aplicativo
 
-Para saber como configurar o acesso do seu aplicativo aos serviços da azure, clique [https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-create-service-principal-portal](aqui).
+Para saber como configurar o acesso do seu aplicativo aos serviços da azure, clique [aqui](https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-create-service-principal-portal).
